@@ -68,7 +68,6 @@ const ReusableForm = ({ isAdminEdit, item, handleCancel, fetchAvailableItems }) 
         )}
       </Formik>
 
-      {/* End  Add Items */}
     </>
   )
 }
