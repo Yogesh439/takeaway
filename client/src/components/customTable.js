@@ -63,6 +63,7 @@ const CustomTable = () => {
     'maxLength'
   ]
   const senderDetails = [
+    'senderName',
     'receiverName',
     'receiverPhoneNo'
   ]

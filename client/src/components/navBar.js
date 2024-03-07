@@ -12,6 +12,7 @@ import navItems from '../config/navItems.json'
 import { ImHome } from 'react-icons/im';
 
 import img from "../image/logoFi.png"
+
 const NavBar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -27,25 +28,28 @@ const NavBar = () => {
     const onClose = () => {
       setOpen(false);
     };
+
+    // Dynamically set the title based on the role
+    const drawerTitle = role === 'admin' ? 'Admin Panel' : role === 'user' ? 'User Dashboard' : 'Rider Dashboard';
+
     return (
         <>
             <div className="navBox1">
-            <div className="logo">
-            <img src={img} alt="Logo" width={250} height={200}/>
+                <div className="logo">
+                    <img src={img} alt="Logo" width={250} height={200}/>
+                </div>
             </div>
-            </div>
-            <FontAwesomeIcon icon={faBars}  onClick={showDrawer}className="adminDrawer"></FontAwesomeIcon>
-
-                <Drawer
-                title="Admin Panel"
+            <FontAwesomeIcon icon={faBars}  onClick={showDrawer} className="adminDrawer" />
+            <Drawer
+                title={drawerTitle}
                 placement="left"
                 onClose={onClose}
                 open={open}
-                >
-                {navItems[role].map(item=>  <Link to={item.link}><div onClick={()=>setOpen(false)} className="naveItems">{item.label}</div></Link> )}
-                </Drawer>
+            >
+                {navItems[role].map(item => <Link to={item.link}><div onClick={() => setOpen(false)} className="naveItems">{item.label}</div></Link> )}
+            </Drawer>
             <div className="navBox2" id={role === 'admin' ? 'adminTheme' : 'userTheme'}>
-            <Link to="/" style={{ textDecoration:"underline",color:"#ffff", paddingLeft:"20px", fontSize:"30px"}}><ImHome /></Link>
+                <Link to="/" style={{ textDecoration:"underline",color:"#ffff", paddingLeft:"20px", fontSize:"30px"}}><ImHome /></Link>
                 <div className="icon">
                     <div className="user_details">
                         <Link to="/profile" className="user_name">{name}</Link>
@@ -53,10 +57,10 @@ const NavBar = () => {
                     </div>
                     <FontAwesomeIcon icon={faUser} className="user_icon" />
                 </div>
-               {role==='admin'? <div className="name_admin">Admin</div>:""}
+                {role === 'admin' ? <div className="name_admin">Admin</div> : ""}
             </div>
         </>
     );
-
 }
+
 export default NavBar;

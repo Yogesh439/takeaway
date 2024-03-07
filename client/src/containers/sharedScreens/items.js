@@ -5,8 +5,6 @@ import { Modal, Button } from "antd";
 import { useSelector } from 'react-redux';
 import Card from '../../components/card';
 import ReusableForm from '../../components/reusableForm'
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Items = () => {
   const [query, setQuery] = useState("")
@@ -44,11 +42,13 @@ const Items = () => {
       {role === "admin" ? <Button onClick={() => showModal()} className="addItems">Add Items</Button> : ""}
 
       <div className='search'>
-        <input type="search" className='search_box' placeholder='Search'
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <FontAwesomeIcon icon={faSearch} className='on' />
-      </div>
+  <div className="search_wrapper">
+    <input type="search" className='search_box' placeholder='Search'
+      onChange={(e) => setQuery(e.target.value)}
+    />
+  </div>
+</div>
+
       <div className='home' id={role === "admin" ? "adminThemeBackground" : "userThemeBackground"}>
         <Modal
           title="Add Items"
