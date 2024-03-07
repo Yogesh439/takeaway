@@ -292,21 +292,17 @@ select {
   background-color: #2705d3;
   color: #fff;
 }
-
 .search {
   margin-top: 30px;
   display: flex;
   /* width: 100%;
   height: 40px; */
   justify-content: center;
-
 }
+
 .search_wrapper {
   position: relative;
 }
-
-
-
 
 .search_box {
   width: 300px; /* Adjust as needed */
@@ -317,6 +313,18 @@ select {
   background-color: ffffff;
   font-size: 1.1rem;
 }
+
+/* Increase the size of the close icon */
+.search_box::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  height: 20px; /* Adjust the height of the icon */
+  width: 20px; /* Adjust the width of the icon */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>'); /* Replace with your own "X" icon */
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
 
 .skeleton {
   margin-top: 30px;
