@@ -96,7 +96,7 @@ const OrdersBox = (props) => {
                <div className='order-tilte-box'>
                   <h2>{props.item.productName ? props.item.productName : "product name"} </h2>
                   <div className='flex ' style={{ marginTop: '1rem' }} >
-                     <MdOutlineDeliveryDining size={25} className="order-icon" /><h4>{props.item.senderName}Sender Name</h4>
+                     <MdOutlineDeliveryDining size={25} className="order-icon" /><h4>{props.item.senderName}</h4>
                      <GiAirplaneArrival size={25} className="order-icon" /> <h4>{props.item.receiverName}</h4>
                   </div>
                </div >

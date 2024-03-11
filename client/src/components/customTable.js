@@ -95,6 +95,10 @@ const CustomTable = () => {
       dataIndex: 'pickupTime',
     },
     {
+      title: 'Sender Name',
+      dataIndex: "senderName"
+    },
+    {
       title: 'Reciver Name',
       dataIndex: "receiverName"
     },

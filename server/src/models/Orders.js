@@ -7,6 +7,7 @@ const ordersSchema = new mongoose.Schema(
     pickupDate: { type: String },
     pickupTime: { type: String },
     senderId: { type: String },
+    senderName: { type: String },
     receiverName: { type: String },
     receiverPhoneNo: { type: Number },
     unitItems: { type: String },
