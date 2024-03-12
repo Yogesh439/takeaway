@@ -40,7 +40,6 @@ const Items = () => {
   return (
     <>
       {role === "admin" ? <Button onClick={() => showModal()} className="addItems">Add Items</Button> : ""}
-
       <div className='search'>
   <div className="search_wrapper">
     <input type="search" className='search_box' placeholder='Search'
