@@ -8,6 +8,8 @@ import priceMap from "../config/priceMap.json";
 import "react-toastify/dist/ReactToastify.css";
 import Map from "./map";
 import "leaflet/dist/leaflet.css";
+import * as Yup from 'yup';
+
 
 const CustomForm = (props) => {
   const { _id } = useSelector((state) => state.user);
@@ -20,10 +22,31 @@ const CustomForm = (props) => {
   };
 
   toast.success(JSON.stringify(props.orderLists));
+  const itemSchema = Yup.object().shape({
+    productName: Yup.string()
+      .min(3, "Too Short!")
+      .max(100, "Too Long!")
+      .required("Required"),
+
+      pickupDate: Yup.string()
+      .required("Required"),
+
+      pickupTime: Yup.string()
+      .required("Required"),
+
+      weight: Yup.string()
+      .required("Required"),
+
+
+    
+  });
 
   return (
     <Formik
+    
       initialValues={props.orderList || {}}
+      validationSchema={itemSchema}
+      validateOnMount={true}
       onSubmit={async (values, { resetForm }) => {
         if (formStep <= 2) {
           setFormStep(formStep + 1);
@@ -60,6 +83,7 @@ const CustomForm = (props) => {
             justifyContent: "center",
           }}
         >
+          
           <Form>
             {formStep === 1 ? (
               <>
@@ -92,7 +116,6 @@ const CustomForm = (props) => {
               <>
                 <Map />
                 <h2>
-                  {" "}
                   Total distance is: {distance} km Rs. {totalPrice || 0}
                 </h2>
                 <CustomButton name="Back" onClick={handleBackClick} />
