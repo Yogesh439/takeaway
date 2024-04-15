@@ -102,7 +102,16 @@ const CustomForm = (props) => {
                         dateFormat="yyyy-MM-dd"
                         placeholderText="pickupDate"
                       />
-                    ) : (
+                    ): item === "pickupTime" ? (
+                      <input
+                        type="time"
+                        id="pickupTime"
+                        name="pickupTime"
+                        value={values.pickupTime}
+                        onChange={(e) => setFieldValue("pickupTime", e.target.value)}
+                        required
+                      />
+                    )  : (
                       <Field
                         name={item}
                         placeholder={item}
