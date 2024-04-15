@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { CustomButton } from "./customButton";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -8,8 +8,9 @@ import priceMap from "../config/priceMap.json";
 import "react-toastify/dist/ReactToastify.css";
 import Map from "./map";
 import "leaflet/dist/leaflet.css";
-import * as Yup from 'yup';
-
+import * as Yup from "yup";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CustomForm = (props) => {
   const { _id } = useSelector((state) => state.user);
@@ -17,37 +18,39 @@ const CustomForm = (props) => {
 
   const [formStep, setFormStep] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
+
   const handleBackClick = () => {
     setFormStep(formStep - 1);
   };
 
   toast.success(JSON.stringify(props.orderLists));
+
   const itemSchema = Yup.object().shape({
     productName: Yup.string()
       .min(3, "Too Short!")
       .max(100, "Too Long!")
       .required("Required"),
+    pickupDate: Yup.date().required("Required"),
+    pickupTime: Yup.string().required("Required"),
+    weight: Yup.string().required("Required"),
 
-      pickupDate: Yup.string()
-      .required("Required"),
-
-      pickupTime: Yup.string()
-      .required("Required"),
-
-      weight: Yup.string()
-      .required("Required"),
-
-
-    
+    receiverPhoneNo: Yup.string()
+      .matches(/^[0-9]+$/, "Receiver phone number must contain only digits")
+      .min(10, "Receiver phone number must be at least 10 digits")
+      .max(10, "Receiver phone number must not exceed 10 digits"),
   });
 
   return (
     <Formik
-    
       initialValues={props.orderList || {}}
       validationSchema={itemSchema}
       validateOnMount={true}
-      onSubmit={async (values, { resetForm }) => {
+      onSubmit={async (values, { resetForm, setFieldValue }) => {
+        const formattedDate = new Date(values.pickupDate).toLocaleDateString(
+          "en-US",
+          { year: "numeric", month: "2-digit", day: "2-digit" }
+        );
+
         if (formStep <= 2) {
           setFormStep(formStep + 1);
         } else {
@@ -60,6 +63,7 @@ const CustomForm = (props) => {
           values.discount = priceMap[props.categoryName];
           values.orderStatus = "Pending";
           values.photo = props.photo;
+          values.pickupDate = formattedDate;
           axios.post(
             `${process.env.REACT_APP_API_URL}/${props.endpoint}`,
             values
@@ -75,69 +79,69 @@ const CustomForm = (props) => {
         );
       }}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched, values, setFieldValue }) => (
         <div
           style={{
             display: "flex",
-            alignItem: "center",
+            alignItems: "center",
             justifyContent: "center",
           }}
         >
-          
           <Form>
-            {formStep === 1 ? (
+            {formStep === 1 && (
               <>
-                {props.itemDetails.map((item) => {
-                  return (
-                    <div>
+                {props.itemDetails.map((item) => (
+                  <div key={item}>
+                    {item === "pickupDate" ? (
+                      <DatePicker
+                        name="pickupDate"
+                        selected={values.pickupDate}
+                        onChange={(date) => setFieldValue("pickupDate", date)}
+                        minDate={new Date()}
+                        defaultValue={new Date(Date.now() - 86400000)}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="pickupDate"
+                      />
+                    ) : (
                       <Field
                         name={item}
-                        key={item}
                         placeholder={item}
-                        type={
-                          item === "password"
-                            ? "password"
-                            : item === "pickupDate"
-                            ? "date"
-                            : item === "pickupTime"
-                            ? "time"
-                            : "text"
-                        }
+                        type={item === "password" ? "password" : "text"}
                       />
-                      {errors[item] && touched[item] ? (
-                        <div className="validaton-message">{errors[item]}</div>
-                      ) : null}
-                    </div>
-                  );
-                })}
+                    )}
+                    <ErrorMessage
+                      name={item}
+                      component="div"
+                      className="validaton-message"
+                    />
+                  </div>
+                ))}
               </>
-            ) : null}
+            )}
             {formStep === 2 && (
               <>
                 <Map />
-                <h2>
-                  Total distance is: {distance} km Rs. {totalPrice || 0}
-                </h2>
+                {/* <h2>Total distance is this: {distance} km
+                </h2> */}
                 <CustomButton name="Back" onClick={handleBackClick} />
               </>
             )}
             {formStep === 3 && (
               <>
-                {props.senderDetails.map((item) => {
-                  return (
-                    <div>
-                      <Field
-                        name={item}
-                        key={item}
-                        placeholder={item}
-                        type={item === "password" ? "password" : "text"}
-                      />
-                      {errors[item] && touched[item] ? (
-                        <div className="validaton-message">{errors[item]}</div>
-                      ) : null}
-                    </div>
-                  );
-                })}
+                {props.senderDetails.map((item) => (
+                  <div key={item}>
+                    <Field
+                      name={item}
+                      placeholder={item}
+                      type={item === "password" ? "password" : "text"}
+                    />
+                    <ErrorMessage
+                      name={item}
+                      component="div"
+                      className="validaton-message"
+                    />
+                  </div>
+                ))}
                 <CustomButton name="Back" onClick={handleBackClick} />
               </>
             )}

@@ -5,7 +5,6 @@ export const initialState = {
   receiverLocationLatLng: {},
   distance: 0
 };
-
 const locationSlice = createSlice({
   name: "location",
   initialState,
@@ -16,8 +15,14 @@ const locationSlice = createSlice({
     setReceiverLocationLatLng: (state, actions) => {
       state.receiverLocationLatLng = actions.payload
     },
-    setDistance: (state, actions) => {
-      state.distance = actions.payload
+    _setDistance: (state, actions) => {
+      state.distance = actions.payload;
+    },
+    get setDistance() {
+      return this._setDistance;
+    },
+    set setDistance(value) {
+      this._setDistance = value;
     },
   }
 });

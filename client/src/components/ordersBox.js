@@ -7,8 +7,8 @@ import io from 'socket.io-client';
 import orderStatusMap from "../config/orderStatusMap.json"
 import { BsCalendar2Date } from 'react-icons/bs'
 import { BiTime, BiMobileAlt } from 'react-icons/bi'
-import { MdOutlineDeliveryDining } from 'react-icons/md'
-import { GiAirplaneArrival } from 'react-icons/gi'
+import { FaUser } from "react-icons/fa6";
+import { FaTruck } from "react-icons/fa";
 const socket = io(process.env.REACT_APP_API_URL);
 
 
@@ -96,17 +96,17 @@ const OrdersBox = (props) => {
                <div className='order-tilte-box'>
                   <h2>{props.item.productName ? props.item.productName : "product name"} </h2>
                   <div className='flex ' style={{ marginTop: '1rem' }} >
-                     <MdOutlineDeliveryDining size={25} className="order-icon" /><h4>{props.item.senderName}</h4>
-                     <GiAirplaneArrival size={25} className="order-icon" /> <h4>{props.item.receiverName}</h4>
+                     <FaUser  size={25} className="order-icon" /><h4>{props.item.senderName}</h4>
+                     <FaTruck size={25} className="order-icon" /> <h4>{props.item.receiverName}</h4>
                   </div>
                </div >
                <div>
                   <div className='flex order-subtitle-box'>
-                     <p> Unit:   {props.item.unitItems}</p>
+                     <p> Unit Items:   {props.item.unitItems}</p>
                      <p> Weight:   {props.item.weight}</p>
                   </div>
                   <div class="flex order-subtitle-box ">
-                     <p> Distance:   {props.item.unitItems}</p>
+                     <p> Distance:   {props.item.distance}</p>
                      <p> Total Price:   {props.item.weight}</p>
 
                   </div>
@@ -123,7 +123,7 @@ const OrdersBox = (props) => {
                         </>
                      ) : (
                         <>
-                           {orderStatusId != 2 || orderStatusId != -1 ? (
+                           {orderStatusId !== 2 || orderStatusId !== -1 ? (
                               <>
                                  <Button onClick={() => changeStatus('AdminAccepted', 2)}>Accept</Button>
                                  <div><Button onClick={() => changeStatus('AdminRejected', -1)} type="primary">Reject</Button></div>
