@@ -59,7 +59,6 @@ const CustomForm = (props) => {
           values.senderId = _id;
           values.totalPrice = totalPrice;
           values.distance = distance;
-          // values.discount =  priceMap[props.categoryName].discountPerUnitPrice
           values.discount = priceMap[props.categoryName];
           values.orderStatus = "Pending";
           values.photo = props.photo;
